@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CampusHub | Smart College Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="components.css">
+</head>
+<body>
+
+<!-- Ambient Background -->
+<div class="ambient-bg">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+  <div class="grid-overlay"></div>
+</div>
+
+<div class="app-shell">
+
+  <!-- Sidebar -->
+  <nav class="sidebar" id="sidebar">
+    <div class="logo-mark">
+      <div class="logo-icon"><i class="fa-solid fa-graduation-cap"></i></div>
+      <div class="logo-text"><span class="logo-main">Campus</span><span class="logo-accent">Hub</span></div>
+    </div>
+
+    <div class="nav-section-label">MAIN</div>
+    <ul class="nav-links">
+      <li class="active" data-page="dashboard"><a href="#"><i class="fa-solid fa-house-chimney"></i><span>Dashboard</span></a></li>
+      <li data-page="learning"><a href="#"><i class="fa-solid fa-brain"></i><span>AI Learning</span></a></li>
+      <li data-page="transit"><a href="#"><i class="fa-solid fa-bus"></i><span>Transport</span></a></li>
+      <li data-page="dining"><a href="#"><i class="fa-solid fa-utensils"></i><span>Dining</span></a></li>
+      <li data-page="library"><a href="#"><i class="fa-solid fa-book-open"></i><span>Library</span></a></li>
+    </ul>
+
+    <div class="nav-section-label">MANAGEMENT</div>
+    <ul class="nav-links">
+      <li data-page="attendance"><a href="#"><i class="fa-solid fa-clipboard-check"></i><span>Attendance</span></a></li>
+      <li data-page="analytics"><a href="#"><i class="fa-solid fa-chart-line"></i><span>Analytics</span></a></li>
+      <li data-page="events"><a href="#"><i class="fa-solid fa-calendar-days"></i><span>Events</span></a></li>
+      <li data-page="map"><a href="#"><i class="fa-solid fa-map-location-dot"></i><span>Campus Map</span></a></li>
+    </ul>
+
+    <div class="sidebar-footer">
+      <div class="user-card">
+        <div class="user-avatar">L</div>
+        <div class="user-details">
+          <span class="user-name">Vengatesh.</span>
+          <span class="user-role">AI&DS · III Year</span>
+        </div>
+        <div class="online-dot"></div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <div class="content-area">
+
+    <!-- Topbar -->
+    <header class="topbar">
+      <button class="sidebar-toggle" id="sidebarToggle"><i class="fa-solid fa-bars"></i></button>
+      <div class="search-wrap">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="text" id="globalSearch" placeholder="Search campus resources, courses, rooms...">
+        <div class="search-results" id="searchResults"></div>
+      </div>
+      <div class="topbar-right">
+        <div class="live-time" id="liveTime"></div>
+        <button class="icon-btn theme-toggle" id="themeToggle" title="Toggle Theme">
+          <i class="fa-solid fa-moon"></i>
+        </button>
+        <button class="icon-btn notif-btn" id="notifBtn">
+          <i class="fa-solid fa-bell"></i>
+          <span class="badge" id="notifBadge">4</span>
+        </button>
+        <!-- Notification Panel -->
+        <div class="notif-panel" id="notifPanel">
+          <div class="notif-header"><h4>Notifications</h4><button onclick="clearNotifs()">Clear all</button></div>
+          <div id="notifList"></div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Pages Container -->
+    <div class="pages-container">
+
+      <!-- ===== DASHBOARD PAGE ===== -->
+      <div class="page active" id="page-dashboard">
+        <div class="page-header">
+          <div>
+            <h2 id="greeting">Good Morning, Vengatesh 👋</h2>
+            <p class="page-subtitle" id="dateDisplay"></p>
+          </div>
+          <div class="weather-mini" id="weatherWidget">
+            <i class="fa-solid fa-sun weather-icon"></i>
+            <div><span class="temp" id="tempDisplay">--°C</span><br><small id="weatherDesc">Loading...</small></div>
+          </div>
+        </div>
+
+        <div class="dash-grid">
+          <!-- Stats Row -->
+          <div class="stat-card glass-card" data-color="blue">
+            <div class="stat-icon"><i class="fa-solid fa-percent"></i></div>
+            <div class="stat-body">
+              <div class="stat-value" id="statAttendance">87%</div>
+              <div class="stat-label">Attendance</div>
+            </div>
+            <div class="stat-bar"><div class="stat-bar-fill" style="width:87%"></div></div>
+          </div>
+          <div class="stat-card glass-card" data-color="green">
+            <div class="stat-icon"><i class="fa-solid fa-trophy"></i></div>
+            <div class="stat-body">
+              <div class="stat-value" id="statGpa">8.4</div>
+              <div class="stat-label">CGPA</div>
+            </div>
+            <div class="stat-bar"><div class="stat-bar-fill" style="width:84%"></div></div>
+          </div>
+          <div class="stat-card glass-card" data-color="purple">
+            <div class="stat-icon"><i class="fa-solid fa-book"></i></div>
+            <div class="stat-body">
+              <div class="stat-value" id="statCourses">6</div>
+              <div class="stat-label">Active Courses</div>
+            </div>
+          </div>
+          <div class="stat-card glass-card" data-color="orange">
+            <div class="stat-icon"><i class="fa-solid fa-star"></i></div>
+            <div class="stat-body">
+              <div class="stat-value" id="statCredits">42</div>
+              <div class="stat-label">Credits Earned</div>
+            </div>
+          </div>
+
+          <!-- Next Class -->
+          <div class="glass-card span-2 next-class-card">
+            <div class="card-header"><h3><i class="fa-solid fa-calendar-check"></i> Next Class</h3><span class="live-badge"><span class="pulse-dot"></span>LIVE</span></div>
+            <div class="next-class-body">
+              <div class="class-info">
+                <h2 id="nextClassName">Data Structures & Algorithms</h2>
+                <p><i class="fa-solid fa-location-dot"></i> <span id="nextClassRoom">CSE Block, Room 401</span></p>
+                <p><i class="fa-solid fa-user-tie"></i> <span id="nextClassProf">Dr. Rajesh Kumar</span></p>
+                <div class="class-countdown">
+                  <div class="countdown-unit"><span id="cdHours">00</span><label>HRS</label></div>
+                  <div class="countdown-sep">:</div>
+                  <div class="countdown-unit"><span id="cdMins">45</span><label>MIN</label></div>
+                  <div class="countdown-unit"><span id="cdSecs">00</span><label>SEC</label></div>
+                </div>
+              </div>
+              <div class="class-schedule">
+                <h4>Today's Schedule</h4>
+                <div id="todaySchedule"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick Actions -->
+          <div class="glass-card quick-actions-card">
+            <h3 class="card-title">Quick Actions</h3>
+            <div class="quick-grid">
+              <button class="quick-btn" onclick="markAttendanceFace()"><i class="fa-solid fa-face-smile"></i><span>Mark Attendance</span></button>
+              <button class="quick-btn" onclick="switchPage('transit')"><i class="fa-solid fa-bus"></i><span>Track Bus</span></button>
+              <button class="quick-btn" onclick="switchPage('dining')"><i class="fa-solid fa-bowl-food"></i><span>Dining Menu</span></button>
+              <button class="quick-btn" onclick="openChatbot()"><i class="fa-solid fa-robot"></i><span>AI Assistant</span></button>
+              <button class="quick-btn" onclick="switchPage('library')"><i class="fa-solid fa-book"></i><span>Library</span></button>
+              <button class="quick-btn" onclick="switchPage('events')"><i class="fa-solid fa-calendar"></i><span>Events</span></button>
+            </div>
+          </div>
+
+          <!-- Transit Widget -->
+          <div class="glass-card transit-dash-card">
+            <div class="card-header"><h3><i class="fa-solid fa-bus"></i> Live Shuttles</h3><button class="link-btn" onclick="switchPage('transit')">View All</button></div>
+            <div id="dashTransit"></div>
+          </div>
+
+          <!-- Dining Widget -->
+          <div class="glass-card dining-dash-card">
+            <div class="card-header"><h3><i class="fa-solid fa-mug-hot"></i> Cafeteria</h3><button class="link-btn" onclick="switchPage('dining')">View Menu</button></div>
+            <div id="dashDining"></div>
+          </div>
+
+          <!-- Alerts -->
+          <div class="glass-card span-3 alerts-card">
+            <div class="card-header"><h3><i class="fa-solid fa-bullhorn"></i> Campus Alerts</h3></div>
+            <div class="alerts-scroll" id="dashAlerts"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== AI LEARNING PAGE ===== -->
+      <div class="page" id="page-learning">
+        <div class="page-header">
+          <div><h2>AI Learning Hub <span class="ai-badge">AI Powered</span></h2><p class="page-subtitle">Personalized learning powered by machine intelligence</p></div>
+        </div>
+        <div class="learning-grid">
+          <!-- Performance Card -->
+          <div class="glass-card perf-card span-2">
+            <h3 class="card-title">Academic Performance Overview</h3>
+            <div class="perf-chart-area">
+              <canvas id="perfChart" height="200"></canvas>
+            </div>
+          </div>
+          <!-- AI Score -->
+          <div class="glass-card ai-score-card">
+            <h3 class="card-title">AI Learning Score</h3>
+            <div class="score-ring">
+              <svg viewBox="0 0 120 120" class="ring-svg">
+                <circle cx="60" cy="60" r="50" class="ring-bg"/>
+                <circle cx="60" cy="60" r="50" class="ring-fill" id="aiScoreRing" stroke-dasharray="314" stroke-dashoffset="80"/>
+              </svg>
+              <div class="score-center"><span class="score-num" id="aiScoreNum">74</span><span class="score-pct">%</span></div>
+            </div>
+            <p class="score-label">Above average in your batch</p>
+          </div>
+          <!-- Recommended Courses -->
+          <div class="glass-card span-3 courses-card">
+            <div class="card-header"><h3>AI-Recommended Courses</h3><span class="ai-tag"><i class="fa-solid fa-wand-magic-sparkles"></i> Personalized</span></div>
+            <div class="courses-grid" id="courseGrid"></div>
+          </div>
+          <!-- Skill Map -->
+          <div class="glass-card span-2 skills-card">
+            <h3 class="card-title">Skill Proficiency Map</h3>
+            <div class="skills-list" id="skillsList"></div>
+          </div>
+          <!-- Study Planner -->
+          <div class="glass-card planner-card">
+            <h3 class="card-title">AI Study Planner</h3>
+            <div class="planner-list" id="studyPlan"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== TRANSIT PAGE ===== -->
+      <div class="page" id="page-transit">
+        <div class="page-header">
+          <div><h2>Smart Transportation</h2><p class="page-subtitle">Real-time shuttle tracking & route management</p></div>
+          <div class="transit-summary" id="transitSummary"></div>
+        </div>
+        <div class="transit-grid">
+          <div class="glass-card span-2 bus-tracker-card">
+            <div class="card-header"><h3><i class="fa-solid fa-satellite-dish"></i> Live Bus Tracker</h3><span class="live-badge"><span class="pulse-dot"></span>LIVE</span></div>
+            <div class="bus-map-sim" id="busMapSim">
+              <div class="campus-map">
+                <div class="map-label">CAMPUS MAP</div>
+                <div class="map-route" id="mapRoutes"></div>
+                <div class="bus-icons" id="busIcons"></div>
+                <div class="map-stops">
+                  <div class="stop" style="left:10%;top:20%"><div class="stop-dot"></div><label>Main Gate</label></div>
+                  <div class="stop" style="left:40%;top:10%"><div class="stop-dot"></div><label>Library</label></div>
+                  <div class="stop" style="left:70%;top:25%"><div class="stop-dot"></div><label>CSE Block</label></div>
+                  <div class="stop" style="left:55%;top:60%"><div class="stop-dot"></div><label>Hostel</label></div>
+                  <div class="stop" style="left:20%;top:70%"><div class="stop-dot"></div><label>Canteen</label></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="glass-card routes-list-card">
+            <h3 class="card-title">All Routes</h3>
+            <div id="allRoutes"></div>
+          </div>
+          <div class="glass-card span-3 schedule-card">
+            <h3 class="card-title"><i class="fa-solid fa-clock"></i> Today's Schedule</h3>
+            <div class="schedule-table" id="busSchedule"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== DINING PAGE ===== -->
+      <div class="page" id="page-dining">
+        <div class="page-header">
+          <div><h2>Dining & Cafeteria</h2><p class="page-subtitle">Live occupancy, today's menu, and nutrition info</p></div>
+        </div>
+        <div class="dining-grid">
+          <div class="glass-card span-2 menu-card">
+            <div class="card-header">
+              <h3><i class="fa-solid fa-bowl-food"></i> Today's Menu</h3>
+              <div class="meal-tabs">
+                <button class="meal-tab active" onclick="switchMeal('breakfast', this)">Breakfast</button>
+                <button class="meal-tab" onclick="switchMeal('lunch', this)">Lunch</button>
+                <button class="meal-tab" onclick="switchMeal('dinner', this)">Dinner</button>
+              </div>
+            </div>
+            <div class="menu-grid" id="menuGrid"></div>
+          </div>
+          <div class="glass-card occupancy-card">
+            <h3 class="card-title">Live Occupancy</h3>
+            <div id="occupancyList"></div>
+            <div class="nutrition-summary">
+              <h4>Nutritional Summary</h4>
+              <div class="nutrition-bars" id="nutritionBars"></div>
+            </div>
+          </div>
+          <div class="glass-card span-3 feedback-card">
+            <h3 class="card-title">Rate Today's Meal</h3>
+            <div class="feedback-form">
+              <div class="star-rating" id="starRating">
+                <i class="fa-regular fa-star" data-val="1"></i>
+                <i class="fa-regular fa-star" data-val="2"></i>
+                <i class="fa-regular fa-star" data-val="3"></i>
+                <i class="fa-regular fa-star" data-val="4"></i>
+                <i class="fa-regular fa-star" data-val="5"></i>
+              </div>
+              <textarea id="feedbackText" placeholder="Share your dining experience..."></textarea>
+              <button class="primary-btn" onclick="submitFeedback()">Submit Feedback</button>
+              <div id="feedbackMsg"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== LIBRARY PAGE ===== -->
+      <div class="page" id="page-library">
+        <div class="page-header">
+          <div><h2>Smart Library</h2><p class="page-subtitle">Search, reserve, and manage your reading resources</p></div>
+        </div>
+        <div class="library-grid">
+          <div class="glass-card span-2 book-search-card">
+            <h3 class="card-title">Search Books & Resources</h3>
+            <div class="lib-search-bar">
+              <i class="fa-solid fa-search"></i>
+              <input type="text" id="bookSearch" placeholder="Title, author, or subject...">
+              <button onclick="searchBooks()">Search</button>
+            </div>
+            <div id="bookResults" class="book-results"></div>
+          </div>
+          <div class="glass-card lib-status-card">
+            <h3 class="card-title">Library Status</h3>
+            <div class="lib-stats">
+              <div class="lib-stat"><span id="libOccupancy">234</span><label>Present Now</label></div>
+              <div class="lib-stat"><span id="libCapacity">400</span><label>Total Capacity</label></div>
+              <div class="lib-stat"><span id="libBooks">12,450</span><label>Total Books</label></div>
+              <div class="lib-stat"><span id="libAvailable">8,302</span><label>Available</label></div>
+            </div>
+            <div class="lib-occ-bar">
+              <div class="lib-occ-fill" style="width:58.5%"></div>
+            </div>
+            <p class="lib-occ-text">58.5% Occupied · Moderate</p>
+            <h4 style="margin-top:20px">My Borrowed Books</h4>
+            <div id="borrowedBooks"></div>
+          </div>
+          <div class="glass-card span-3 study-rooms-card">
+            <h3 class="card-title"><i class="fa-solid fa-door-open"></i> Study Room Booking</h3>
+            <div class="rooms-grid" id="studyRooms"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== ATTENDANCE PAGE ===== -->
+      <div class="page" id="page-attendance">
+        <div class="page-header">
+          <div><h2>Smart Attendance</h2><p class="page-subtitle">AI-powered biometric attendance tracking</p></div>
+        </div>
+        <div class="attend-grid">
+          <div class="glass-card face-scan-card">
+            <h3 class="card-title"><i class="fa-solid fa-face-smile"></i> Face Recognition</h3>
+            <div class="face-scan-area" id="faceScanArea">
+              <div class="scan-circle">
+                <div class="scan-line"></div>
+                <i class="fa-solid fa-user scan-icon"></i>
+              </div>
+              <p id="scanStatus">Position your face in the frame</p>
+              <button class="primary-btn" id="scanBtn" onclick="startFaceScan()">Start Face Scan</button>
+            </div>
+          </div>
+          <div class="glass-card span-2 attend-summary-card">
+            <h3 class="card-title">Attendance Summary</h3>
+            <div class="subject-attendance" id="subjectAttendance"></div>
+          </div>
+          <div class="glass-card span-3 attend-calendar-card">
+            <h3 class="card-title">Attendance Calendar</h3>
+            <div class="attend-calendar" id="attendCalendar"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== ANALYTICS PAGE ===== -->
+      <div class="page" id="page-analytics">
+        <div class="page-header">
+          <div><h2>Data Analytics & Administration</h2><p class="page-subtitle">Smart campus insights and performance metrics</p></div>
+        </div>
+        <div class="analytics-grid">
+          <div class="glass-card span-2 admin-stats-card">
+            <h3 class="card-title">Campus Overview</h3>
+            <div class="admin-stat-row" id="adminStats"></div>
+          </div>
+          <div class="glass-card dept-card">
+            <h3 class="card-title">Dept. Performance</h3>
+            <div id="deptPerf"></div>
+          </div>
+          <div class="glass-card span-2 trend-chart-card">
+            <h3 class="card-title">Attendance Trend (Monthly)</h3>
+            <canvas id="trendChart" height="220"></canvas>
+          </div>
+          <div class="glass-card energy-card">
+            <h3 class="card-title"><i class="fa-solid fa-bolt"></i> Energy Monitoring</h3>
+            <div id="energyStats"></div>
+          </div>
+          <div class="glass-card span-3 reports-card">
+            <div class="card-header"><h3>Generate Reports</h3></div>
+            <div class="report-buttons">
+              <button class="report-btn" onclick="generateReport('attendance')"><i class="fa-solid fa-file-pdf"></i> Attendance Report</button>
+              <button class="report-btn" onclick="generateReport('academic')"><i class="fa-solid fa-file-csv"></i> Academic Report</button>
+              <button class="report-btn" onclick="generateReport('transport')"><i class="fa-solid fa-file-excel"></i> Transport Report</button>
+              <button class="report-btn" onclick="generateReport('finance')"><i class="fa-solid fa-file-invoice"></i> Finance Summary</button>
+            </div>
+            <div id="reportMsg"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== EVENTS PAGE ===== -->
+      <div class="page" id="page-events">
+        <div class="page-header">
+          <div><h2>Campus Events</h2><p class="page-subtitle">Upcoming events, workshops & hackathons</p></div>
+        </div>
+        <div class="events-grid">
+          <div class="glass-card span-2 events-list-card">
+            <div class="card-header"><h3>Upcoming Events</h3>
+              <select class="filter-select" onchange="filterEvents(this.value)">
+                <option value="all">All Events</option>
+                <option value="academic">Academic</option>
+                <option value="cultural">Cultural</option>
+                <option value="sports">Sports</option>
+                <option value="tech">Tech</option>
+              </select>
+            </div>
+            <div id="eventsList"></div>
+          </div>
+          <div class="glass-card register-card">
+            <h3 class="card-title">Register for Event</h3>
+            <div id="eventRegForm">
+              <select id="eventSelect" class="form-input">
+                <option>Select Event...</option>
+              </select>
+              <input type="text" class="form-input" placeholder="Your Name" id="evtName">
+              <input type="text" class="form-input" placeholder="Roll Number" id="evtRoll">
+              <input type="email" class="form-input" placeholder="Email" id="evtEmail">
+              <button class="primary-btn" onclick="registerEvent()">Register Now</button>
+              <div id="regMsg"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== MAP PAGE ===== -->
+      <div class="page" id="page-map">
+        <div class="page-header">
+          <div><h2>Campus Map</h2><p class="page-subtitle">Interactive campus navigation</p></div>
+        </div>
+        <div class="glass-card map-full-card">
+          <div class="campus-full-map" id="campusFullMap">
+            <div class="map-title">CAMPUSHUB COLLEGE OF ENGINEERING</div>
+            <!-- Buildings -->
+            <div class="building" style="left:15%;top:15%;width:120px;height:80px;background:rgba(99,102,241,0.3)" data-name="Admin Block">
+              <i class="fa-solid fa-building"></i><label>Admin Block</label>
+            </div>
+            <div class="building" style="left:35%;top:10%;width:130px;height:90px;background:rgba(6,182,212,0.3)" data-name="CSE Block">
+              <i class="fa-solid fa-desktop"></i><label>CSE Block</label>
+            </div>
+            <div class="building" style="left:60%;top:12%;width:120px;height:85px;background:rgba(16,185,129,0.3)" data-name="Library">
+              <i class="fa-solid fa-book"></i><label>Library</label>
+            </div>
+            <div class="building" style="left:10%;top:50%;width:100px;height:80px;background:rgba(245,158,11,0.3)" data-name="Canteen">
+              <i class="fa-solid fa-utensils"></i><label>Canteen</label>
+            </div>
+            <div class="building" style="left:35%;top:55%;width:140px;height:100px;background:rgba(239,68,68,0.3)" data-name="Hostel">
+              <i class="fa-solid fa-house"></i><label>Hostel</label>
+            </div>
+            <div class="building" style="left:65%;top:50%;width:120px;height:90px;background:rgba(167,139,250,0.3)" data-name="Sports Complex">
+              <i class="fa-solid fa-dumbbell"></i><label>Sports Complex</label>
+            </div>
+            <div class="building" style="left:80%;top:25%;width:110px;height:80px;background:rgba(251,113,133,0.3)" data-name="Mech Block">
+              <i class="fa-solid fa-gear"></i><label>Mech Block</label>
+            </div>
+            <div class="map-tooltip" id="mapTooltip"></div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- end pages-container -->
+  </div><!-- end content-area -->
+</div><!-- end app-shell -->
+
+<!-- AI Chatbot -->
+<button class="chatbot-fab" id="chatbotFab" onclick="toggleChatbot()">
+  <i class="fa-solid fa-robot"></i>
+  <span class="fab-tooltip">AI Assistant</span>
+</button>
+
+<div class="chatbot-window" id="chatbotWindow">
+  <div class="chat-header">
+    <div class="chat-agent-info">
+      <div class="agent-avatar"><i class="fa-solid fa-robot"></i></div>
+      <div><strong>CampusAI</strong><br><small class="online-text">● Online</small></div>
+    </div>
+    <button class="chat-close" onclick="toggleChatbot()"><i class="fa-solid fa-xmark"></i></button>
+  </div>
+  <div class="chat-messages" id="chatMessages">
+    <div class="chat-msg bot">
+      <div class="msg-bubble">Hi Vengatesh! 👋 I'm your CampusAI assistant. Ask me anything about your classes, bus timings, dining, or campus info!</div>
+    </div>
+    <div class="chat-suggestions">
+      <button onclick="quickAsk('What is my attendance?')">📊 My attendance</button>
+      <button onclick="quickAsk('Next bus time?')">🚌 Bus timing</button>
+      <button onclick="quickAsk('What is for lunch today?')">🍽️ Today's menu</button>
+      <button onclick="quickAsk('Any events today?')">📅 Events today</button>
+    </div>
+  </div>
+  <div class="chat-input-area">
+    <input type="text" id="chatInput" placeholder="Ask me anything..." onkeydown="if(event.key==='Enter')sendChat()">
+    <button class="send-btn" onclick="sendChat()"><i class="fa-solid fa-paper-plane"></i></button>
+  </div>
+</div>
+
+<!-- Face Scan Modal -->
+<div class="modal-overlay" id="faceModal">
+  <div class="modal glass-card">
+    <h3><i class="fa-solid fa-face-smile"></i> Face Recognition Attendance</h3>
+    <div class="face-frame">
+      <div class="face-scan-ring"></div>
+      <div class="face-scan-bar"></div>
+      <i class="fa-solid fa-user face-placeholder"></i>
+    </div>
+    <p id="faceModalStatus">Scanning face... Please stay still</p>
+    <div class="scan-progress"><div id="scanProgressBar"></div></div>
+    <button class="primary-btn" onclick="closeFaceModal()">Close</button>
+  </div>
+</div>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
